@@ -10,7 +10,7 @@
 # Version 1
 
 # 1. data exploration
-import numpy as np , pandas as pd , matplotlib.pyplot as plt
+import numpy as np, pandas as pd, matplotlib.pyplot as plt
 
 # import the data
 data = pd.read_csv("voice.csv")
