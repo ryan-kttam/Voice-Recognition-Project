@@ -46,4 +46,10 @@ x_train, x_test, y_train, y_test = train_test_split(features, label, test_size =
 ```
 
 ## Model Training
-
+After splitting the data into training and test set, I used support vector machine algorithm in order to predict Male/Female voices. I left the model with dafault parameters in order to see how well it will perform. 
+In addition, I used 'accuracy_score' from sklearn.metrics as a metric to test the performance. It compares the predictions with the actual result: it will return the number of correct predictions over the number of predictions. The higher the accuracy (highest being as 1, lowest as 0), the better the performance. 
+```
+clf.fit(x_train, y_train)
+predictions = clf.predict(x_test)
+accuracy_score(y_test, predictions)
+```
