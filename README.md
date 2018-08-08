@@ -53,3 +53,40 @@ clf.fit(x_train, y_train)
 predictions = clf.predict(x_test)
 accuracy_score(y_test, predictions)
 ```
+## Model tuning
+It turns out that the SVM model with default parameters performed decently in the test set, with 96% accuracy. I, however, do not stop here. Model tuning is essential because assuming the default parameters are the best is not a good practice. In this case, I will adjust C and Gamma in order to find out the best parameters for this data; specifically, I will visualize and observe which 'C' will give us the best accuracy. 
+```
+C_range = list(range(1, 100))
+c_tuning_score = []
+k_fold = KFold(n_splits=10, random_state=1, shuffle=True) # object for 10-fold cv
+scorer = make_scorer(accuracy_score) # scorer for cv, accuracy_score in this case
+for c in C_range:
+   model = SVC(C=c)
+   cv_scores = cross_val_score(model, x_train, y_train, cv=k_fold, scoring=scorer)
+   c_tuning_score.append(cv_scores.mean())
+# visualize and observe which 'C' give us the best accuracy
+import matplotlib.pyplot as plt
+plt.plot(range(1, 100), c_tuning_score)
+plt.ylabel('cross-validated accuracy')
+plt.xlabel('parameter: C')
+```
+When using the code above, we can see that the model performs the best when C is in between 5 and 15. To find out the best estimate for C, I chose to reduce the range of the graph and to locate where the maximum of C is. 
+```
+
+plt.plot(range(5, 15), c_tuning_score[5:15])
+# in the above plot we can see that the maximum of C is from 9 to 11.
+# Let's break down the 10 and explore the best value for C.
+C_range2 = list ( np.arange(9.00, 11, 0.01) )
+c_tuning_score2 = []
+for c in C_range2:
+   model = SVC(C=c)
+   cv_scores2 = cross_val_score(model, x_train, y_train, cv=k_fold, scoring=scorer)
+   c_tuning_score2.append(cv_scores2.mean())
+plt.plot(np.arange(9.00, 11.00, 0.01), c_tuning_score2)
+```
+It turns out that the model performs the best when C is 10. 
+I then repeat similar technique with Gamma, with gamma equal (0.0001, 0.001, .01, .1, 1, 10, 100). It turns out the best Gamma is 0.15.
+To summarize, the best hyperparameters for SVM for this data is C = 10 and gamma = 0.15.
+
+
+
