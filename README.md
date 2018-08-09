@@ -88,5 +88,26 @@ It turns out that the model performs the best when C is 10.
 I then repeat similar technique with Gamma, with gamma equal (0.0001, 0.001, .01, .1, 1, 10, 100). It turns out the best Gamma is 0.15.
 To summarize, the best hyperparameters for SVM for this data is C = 10 and gamma = 0.15.
 
+## Final Model
+After I have the best hyperparameters, it is time to plug those in to our SVM model. 
+```
+clf = SVC(C=10, gamma=0.05)
+```
+Before I make any prediction on the test set, I chose to run a k-fold validation in order to make sure the model is not overfitting. It turns out that the average accuracy for a 10-fold validation is 98.17%.
+```
+k_fold = KFold(n_splits=10, random_state=3, shuffle=True)
+scorer = make_scorer(accuracy_score)
+cv_scores = cross_val_score(clf, x_train, y_train, cv=k_fold, scoring=scorer)
+cv_scores.mean() # the k-fold cv average accuracy is 98.17%
+```
 
+It is finally the time to plug the model in to the test set. 
+```
+clf.fit(x_train, y_train)
+predictions = clf.predict(x_test)
+accuracy_score(y_test,predictions) 
+```
+The SVM model performed exceptional, with 99.05% accuracy on our test set!
+While this is a very good model, there are some potential improvements that I could have try when tuning the models, such as trying kernel = 'linear' or 'poly'. In this case, I only used 'rbf' as our kernel. Fortunately, I was able to generate a decent accuracy percentage for my test set.
 
+There are many applications for this model. For example, we can apply this model in a customer service team. By predicting whether the voice of a customer is male or female, we could construct an analysis on gender regarding whether one gender tends to have more complains than the other. While such tasks could be performed by human, training a machine learning model on this could save a company tons of time and resources. 
