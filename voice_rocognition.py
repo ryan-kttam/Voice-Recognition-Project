@@ -11,13 +11,15 @@
 
 # 1. data exploration
 import numpy as np, pandas as pd, matplotlib.pyplot as plt
+import seaborn as sns
 
 # import the data
 data = pd.read_csv("voice.csv")
 
 # take a look at the data and its summary
-data.head()
+data.head(2)
 data.describe()
+list(data)
 
 # check if there are any null values
 data[data.isnull().any(axis=1)]
@@ -27,14 +29,16 @@ data.isnull().sum()
 data['label'].value_counts() # there are 1584 male voices and 1584 female voices.
 
 # visualize features relationship
-import seaborn
-seaborn.pairplot(data[['meanfreq', 'centroid', 'IQR', 'label']], hue = 'label', size = 2)
+
+sns.pairplot(data[['meanfreq', 'centroid', 'IQR', 'label']], hue='label', size=2)
+sns.pairplot(data[['kurt', 'Q25', 'Q75', 'label']], hue='label', size=2)
+sns.pairplot(data[['minfun', 'maxfun', 'meandom', 'label']], hue='label', size=2)
 
 # get the column names, if interested
 list(data)
 
 # replace male as 1 and female as 0
-data = data.replace( {'label': {'male': 1, 'female' :0}} )
+data = data.replace({'label': {'male': 1, 'female': 0}})
 
 # separating features and the label
 label = data['label']
@@ -87,6 +91,7 @@ plt.plot(range(1, 100), c_tuning_score)
 plt.ylabel('cross-validated accuracy')
 plt.xlabel('parameter: C')
 # The maximum for C is around between 5 to 15,
+
 plt.plot(range(5, 15), c_tuning_score[5:15])
 # in the above plot we can see that the maximum of C is from 9 to 11.
 # Let's break down the 10 and explore the best value for C.
@@ -125,7 +130,6 @@ plt.plot(g_range2, g_tuning_score2)
 # 5. Test the final model with the test set
 # plug in the best parameter: C = 2 and gamma = 0.15
 clf = SVC(C=10, gamma=0.05)
-
 # Before we run on our test set, let's try a k-fold CV to see how it performs
 k_fold = KFold(n_splits=10, random_state=3, shuffle=True)
 scorer = make_scorer(accuracy_score)
