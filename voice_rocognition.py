@@ -10,20 +10,16 @@
 # Version 1
 
 # 1. data exploration
-<<<<<<< HEAD
-import numpy as np, pandas as pd, matplotlib.pyplot as plt
-import seaborn as sns
-=======
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn
+import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score, KFold
 from sklearn.metrics import  accuracy_score , make_scorer
 from sklearn.svm import SVC
->>>>>>> 5f016f7ad22166fd8c2ff6ab68d957b1266caf0f
 
 # import the data
 data = pd.read_csv("C:/Github/Voice-Recognition-Project/voice.csv")
@@ -31,7 +27,6 @@ data = pd.read_csv("C:/Github/Voice-Recognition-Project/voice.csv")
 # take a look at the data and its summary
 data.head(2)
 data.describe()
-list(data)
 
 # check if there are any null values
 data[data.isnull().any(axis=1)]
@@ -41,24 +36,16 @@ data.isnull().sum()
 data['label'].value_counts() # there are 1584 male voices and 1584 female voices.
 
 # visualize features relationship
-<<<<<<< HEAD
-
 sns.pairplot(data[['meanfreq', 'centroid', 'IQR', 'label']], hue='label', size=2)
 sns.pairplot(data[['kurt', 'Q25', 'Q75', 'label']], hue='label', size=2)
 sns.pairplot(data[['minfun', 'maxfun', 'meandom', 'label']], hue='label', size=2)
-=======
-seaborn.pairplot(data[['meanfreq', 'centroid', 'IQR', 'label']], hue = 'label', size = 2)
->>>>>>> 5f016f7ad22166fd8c2ff6ab68d957b1266caf0f
+
 
 # get the column names, if interested
 list(data)
 
 # replace male as 1 and female as 0
-<<<<<<< HEAD
 data = data.replace({'label': {'male': 1, 'female': 0}})
-=======
-data = data.replace({'label': {'male': 1, 'female' :0}})
->>>>>>> 5f016f7ad22166fd8c2ff6ab68d957b1266caf0f
 
 # separating features and the label
 label = data['label']
@@ -150,13 +137,9 @@ plt.plot(g_range2, g_tuning_score2)
 # the best gamma we have got is 0.05
 
 # 5. Test the final model with the test set
-# plug in the best parameter: C = 2 and gamma = 0.15
-<<<<<<< HEAD
-clf = SVC(C=10, gamma=0.05)
-=======
+# plug in the best parameter: C = 9 and gamma = 0.05
 clf = SVC(C=9, gamma=0.05)
 
->>>>>>> 5f016f7ad22166fd8c2ff6ab68d957b1266caf0f
 # Before we run on our test set, let's try a k-fold CV to see how it performs
 k_fold = KFold(n_splits=10, random_state=3, shuffle=True)
 scorer = make_scorer(accuracy_score)
@@ -166,7 +149,7 @@ cv_scores.mean() # the k-fold cv average accuracy is 98.17%
 # Now, run our final model with the test set!
 clf.fit(x_train, y_train)
 predictions = clf.predict(x_test)
-accuracy_score(y_test,predictions) #accuracy: 99.05% on test set
+accuracy_score(y_test, predictions) #accuracy: 99.05% on test set
 
 # We got 99.05% accuracy on our test set. Not bad!
 # There are some potential improvement about SVM, such as trying kernel = 'linear' or 'poly'
